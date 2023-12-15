@@ -6,6 +6,7 @@ const PORT = process.env.PORT || 4000;
 const authRouter = require("./routes/authRoute");
 const bodyParser = require("body-parser");
 const { notFound, errorHandler } = require("./middlewares/errorHandler");
+const productRouter = require('./routes/productRoute');
 const cookieParser = require("cookie-parser");
 
 dbConnect();
@@ -20,6 +21,7 @@ app.use(cookieParser());
 
 
 app.use('/api/user',authRouter);
+app.use('/api/product',productRouter);
 
 // middlewares we have to pass after the routes only 
 
