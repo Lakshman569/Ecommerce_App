@@ -6,17 +6,16 @@ var productSchema = new mongoose.Schema({
     title:{
         type:String,
         required:true,
-        trim:true,
     },
     slug:{
         type:String,
-        require:true,
+        required:true,
         unique:true,
         lowercase:true,
     },
     description:{
         type:String,
-        require:true,
+        required:true,
 
     },
     price:{
@@ -25,16 +24,19 @@ var productSchema = new mongoose.Schema({
 
     },
     category:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"Category",
+        type:String,
+        required:true,
 
     },
     brand:{
         type:String,
-        enum:['Apple','Samsung','Lenovo'],
+        required:true,
 
     },
-    quantity:Number,
+    quantity:{
+        type:Number,
+        required:true,
+    }, 
 
     sold:{
         type:Number,
@@ -46,7 +48,7 @@ var productSchema = new mongoose.Schema({
     },
     color:{
         type:String,
-        enum:['Black','Brown','Red'],
+        required:true,
 
     },
     ratings:[{

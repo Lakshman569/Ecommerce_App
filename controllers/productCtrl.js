@@ -1,10 +1,15 @@
 const asyncHandler = require('express-async-handler');
 const Product = require('../models/productModel');
-
+const bodyParser = require("body-parser");
+const slugify = require('slugify');
 
 
 const createProduct = asyncHandler(async(req,res) =>{
     try{
+
+        if(req.body.title) {
+            req.body.slug = slugify(req.body.title);
+        }
 
         const newProduct = await  Product.create(req.body);
         res.json(newProduct);
@@ -13,9 +18,69 @@ const createProduct = asyncHandler(async(req,res) =>{
     catch(error){
         throw new Error(error);
     }
+   
     
 });
 
+// update product
+
+const updateProduct = asyncHandler(async(req,res)=>{
+    
+  const id = req.params;  
+    try{
+
+        if(req.body.title){
+            req.body.slug = slugify(req.body.title);
+
+        }
+
+        const updateProduct = await Product.findOneAndUpdate({ id },req.body,{
+            new:true,
+        });
+        
+        res.json(updateProduct);
+
+    }catch(error){
+        throw new Error(error);
+    }
+})
+// get a single product
+const getaProduct = asyncHandler(async(req,res)=>{
+    const {id} = req.params;
+    try{
+        const findProduct = await Product.findById(id);
+        res.json(findProduct);
+
+    }
+    catch(error){
+        throw new Error(error);
+    }
+});
+
+// get all products
+
+const getAllProduct = asyncHandler(async(req,res)=>{
+    try{
+        const getallProducts = await Product.find();
+        res.json(getallProducts);
+
+    }
+    catch(error){
+        throw new Error(error);
+    }
+});
+
+// delete Product
+
+const deleteProduct = asyncHandler(async(req,res)=>{
+    const id = req.params;
+    try{
+        const deleteProduct = await Product.findOneAndDelete(id);
+        res.json(deleteProduct);
+    }catch(error){
+        throw new Error(error);
+    }
+})
 
 
 
@@ -25,4 +90,12 @@ const createProduct = asyncHandler(async(req,res) =>{
 
 
 
-module.exports ={createProduct};
+
+
+module.exports ={
+    createProduct,
+    getaProduct,
+    getAllProduct,
+    updateProduct,
+    deleteProduct,
+};

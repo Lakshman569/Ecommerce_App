@@ -8,9 +8,10 @@ const bodyParser = require("body-parser");
 const { notFound, errorHandler } = require("./middlewares/errorHandler");
 const productRouter = require('./routes/productRoute');
 const cookieParser = require("cookie-parser");
-
+const morgan = require('morgan');
 dbConnect();
 
+app.use(morgan("dev"));
 app.use(bodyParser.json());
 
 app.use(bodyParser.urlencoded({extended: false} ));
