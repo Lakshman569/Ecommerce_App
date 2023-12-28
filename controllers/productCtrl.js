@@ -27,6 +27,7 @@ const createProduct = asyncHandler(async(req,res) =>{
 const updateProduct = asyncHandler(async(req,res)=>{
     
   const id = req.params;  
+
     try{
 
         if(req.body.title){
@@ -61,7 +62,15 @@ const getaProduct = asyncHandler(async(req,res)=>{
 
 const getAllProduct = asyncHandler(async(req,res)=>{
     try{
-        const getallProducts = await Product.find();
+
+        const queryObj = {...req.query};
+        const excludefields = ['page','sort','limit','fields'];
+        excludefields.forEach((el) => delete queryObj[el]);
+
+        let queryStr = JSON.stringify(queryObj);
+        queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g);
+
+        const getallProducts = await Product.find(queryObj);
         res.json(getallProducts);
 
     }
@@ -80,7 +89,9 @@ const deleteProduct = asyncHandler(async(req,res)=>{
     }catch(error){
         throw new Error(error);
     }
-})
+});
+
+// filter
 
 
 
